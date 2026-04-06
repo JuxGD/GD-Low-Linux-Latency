@@ -31,15 +31,14 @@ Copy these settings.
 </p>
 
 ## 1.1 Method 2 (ONLY AMD / INTEL)
-<p>
-Set present mode to immediately deliver any frame instead of waiting.
-  `nano ~/game.sh`<br>
-  Add present mode variable:<br>
-  `#!/bin/bash`<br>
-  `export MESA_VK_WSI_PRESENT_MODE=immediate`<br>
-  `exec "$@"`<br>
-  Save with `Ctrl X, Ctrl Y, Enter`<br>
-</p>
+
+Set present mode to immediately deliver any frame instead of waiting.<br>
+`nano ~/game.sh`<br>
+Add present mode variable:<br>
+`#!/bin/bash`<br>
+`export MESA_VK_WSI_PRESENT_MODE=immediate`<br>
+`exec "$@"`<br>
+Save with `Ctrl X, Ctrl Y, Enter`<br>
 
 # 2.
 ## How to disable X11 in favour of Wayland (only for wayland)
