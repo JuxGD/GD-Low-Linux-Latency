@@ -3,7 +3,7 @@ Typically, the culprit for increased input latency on linux can be due to these 
 1. Tearing disabled
 2. Geometry Dash running on X11
 
-# 1. <a href="https://github.com/loplxl/GD-Low-Linux-Latency/blob/main/README.md#1">(#)</a>
+# 1.
 ## How to enable tearing
 You can search for instructions on how to do this for your desktop environment, many desktop environments may not even support tearing.<br>
 I will demonstrate how to do this for KDE Plasma on CachyOS.
@@ -16,6 +16,10 @@ Ensure that tearing is enabled.
   <br>
   <img width="924" height="669" alt="image" src="https://github.com/user-attachments/assets/8b938084-dc30-43a8-8140-a16936ea02e2" />
   <br>
+</p>
+
+## 1.1 Method 1 (ALL GPUs)
+<p>
 Open system settings and navigate to window rules.
   <br>
   <img width="678" height="132" alt="image" src="https://github.com/user-attachments/assets/b1da3c42-de1f-42cc-9815-f6b4b0d2e6c6" />
@@ -26,14 +30,18 @@ Copy these settings.
   <br>
 </p>
 
-## Method 2
-Another method to disable tearing globally is to set the KWIN_DRM_NO_AMS environment variable in /etc/environment<br>
-`sudo nano /etc/environment`<br>
-Enter: `KWIN_DRM_NO_AMS=1`<br>
-Save with `Ctrl X, Ctrl Y, Enter`<br>
-Restart your computer
+## 1.1 Method 2 (ONLY AMD / INTEL)
+<p>
+Set present mode to immediately deliver any frame instead of waiting.
+  `nano ~/game.sh`<br>
+  Add present mode variable:<br>
+  `#!/bin/bash`<br>
+  `export MESA_VK_WSI_PRESENT_MODE=immediate`<br>
+  `exec "$@"`<br>
+  Save with `Ctrl X, Ctrl Y, Enter`<br>
+</p>
 
-# 2. <a href="https://github.com/loplxl/GD-Low-Linux-Latency/blob/main/README.md#2">(#)</a>
+# 2.
 ## How to disable X11 in favour of Wayland (only for wayland)
 Assuming you run Wayland, there is an extra layer between Geometry Dash and your screen called XWayland, which is used as Proton runs games with X11 by default.<br>
 To change this, we will use steam launch options, I have found that Proton-GE and Proton-cachyos both have the PROTON_ENABLE_WAYLAND variable available, Proton Experimental does not.<br>
@@ -43,11 +51,11 @@ First, check that Geometry Dash is running through XWayland, I will do this thro
 Open Geometry Dash, and check if Geometry Dash is in Wayland or X11 windows category.<br>
 If it is in X11 category, follow these steps to make Geometry Dash use Wayland:<br>
 `nano ~/game.sh`<br>
-Enter:<br>
+Add wayland variable:<br>
 `#!/bin/bash`<br>
-`PROTON_ENABLE_WAYLAND=1`<br>
+`export PROTON_ENABLE_WAYLAND=1`<br>
 `exec "$@"`<br>
-Save with `Ctrl X, Ctrl Y, Enter`<br>
+Save with: `Ctrl X, Ctrl Y, Enter`<br>
 
 Go to Geometry Dash on Steam, right click it in your library and click on Properties<br>
 Enter this into the LAUNCH OPTIONS box: `~/game.sh %command%`<br>
