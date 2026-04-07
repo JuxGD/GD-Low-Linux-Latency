@@ -51,7 +51,7 @@ nano ~/game.sh
 Add present mode variable:<br>
 (or visit #4)<br>
 
-```
+```bash
 #!/bin/bash
 export vblank_mode=0
 exec "$@"
@@ -79,7 +79,7 @@ nano ~/game.sh
 <br><br>
 Add wayland variable:<br>
 (or visit #4)<br>
-```
+```bash
 #!/bin/bash
 export PROTON_ENABLE_WAYLAND=1
 exec "$@"
@@ -96,7 +96,7 @@ Launch Geometry Dash and check KWin debug console, make sure that Geometry Dash 
 Add this line in your game.sh:<br>
 (or visit #4)<br>
 
-```
+```bash
 export ENABLE_LAYER_MESA_ANTI_LAG=1
 ```
 <br><br>
@@ -104,7 +104,7 @@ export ENABLE_LAYER_MESA_ANTI_LAG=1
 <h1 align="center">4. Global game.sh</h1>
 This game.sh is designed to cover all cases for lowest latency:<br>
 
-```
+```bash
 #!/bin/bash
 export PROTON_ENABLE_WAYLAND=1
 export vblank_mode=0
