@@ -1,121 +1,79 @@
 <h1 align="center">Overview</h1>
-Typically, the culprit for increased input latency on linux can be due to these things:
-1. Tearing disabled
-2. Geometry Dash running on X11
-3. Not using provided optional tweaks (e.g. AMD Anti-Lag)
-
-<h1 align="center">Topics</h1>
-
-- [1. How to enable tearing](#1-how-to-enable-tearing)
-- [2. How to disable X11 in favour of Wayland](#2-how-to-disable-x11-in-favour-of-wayland-only-for-wayland)
-- [3. Platform-specific tweaks](#3-platform-specific-tweaks)
-- [4. Global game.sh](#4-global-gamesh)
-- [5. Common issues](#common-issues)
-  
-<h1 align="center">1. How to enable tearing</h1>
-You can search for instructions on how to do this for your desktop environment, many desktop environments may not even support tearing.<br>
-I will demonstrate how to do this for KDE Plasma on CachyOS.
-
-<table>
-  <tr>
-    <td align="center">Open system settings and navigate to display settings</td>
-    <td align="center"><img width="671" height="130" alt="image" src="https://github.com/user-attachments/assets/6037a398-a939-4fd1-bcc5-3a812cda0014" /></td>
-  </tr>
-  <tr>
-    <td align="center">Ensure that tearing is enabled</td>
-    <td align="center"><img width="924" height="669" alt="image" src="https://github.com/user-attachments/assets/8b938084-dc30-43a8-8140-a16936ea02e2" /></td>
-  </tr>
-</table>
+Typically, the culprit for increased input latency on Linux may be:
+<br>1. Poorly set up graphics drivers
+<br>2. Compositor forcing V-Sync
+<br>3. Geometry Dash running through XWayland
+<br>
 <br>
 
-<h2 align="center">1.1 Method 1 (ALL GPUs)</h2>
-<table>
-  <tr>
-    <td align="center">Open system settings and navigate to window rules</td>
-    <td align="center"><img width="678" height="132" alt="image" src="https://github.com/user-attachments/assets/b1da3c42-de1f-42cc-9815-f6b4b0d2e6c6" /></td>
-  </tr>
-  <tr>
-    <td align="center">Copy these settings</td>
-    <td align="center"><img width="659" height="349" alt="image" src="https://github.com/user-attachments/assets/f9dff8ab-00ec-4118-a7e3-ab0ed0752845" /></td>
-  </tr>
-</table>
+<h1 align="center">Sections</h1>
 
-<h2 align="center">1.1 Method 2 (ONLY AMD / INTEL)</h2>
+- [1. Graphics Drivers](#1-graphics-drivers)
+- [2. The Kernel](#2-the-kernel)
+- [3. Proton](#3-proton)
+- [4. Enabling Tearing on Wayland](#4-enabling-tearing-on-wayland)
+- [5. Environment Variables](#5-environment-variables)
+- [6. Ananicy-Cpp](#6-ananicy-cpp)
+- [7. Power Profile](#7-power-profile)
 
-Set present mode to immediately deliver any frame instead of waiting for a vertical refresh.<br>
+<br>
+<h1 align="left">1. Graphics Drivers</h1>
+The single most important part of this guide.<br>
+This is a pretty long topic so for this step you should check out this guide instead:<br>
+https://github.com/lutris/docs/blob/master/InstallingDrivers.md<br>
+<br>
+I would highly recommend testing a desktop environment with X11 if you use an NVIDIA GPU over Wayland as it may deliver better performance and latency.<br>
+If you do decide to use X11, you can skip the "Enabling Tearing" step and disable the compositor in the settings app instead.<br>
 
-```
-nano ~/game.sh
-```
-<br><br>
-Add present mode variable:<br>
-(or visit #4)<br>
+<h1 align="left">2. The Kernel</h1>
+If you are on a gaming focused Linux distribution such as CachyOS, then this step will not be necessary for you as they already use a custom kernel made for gaming specifically by default.<br>
+However, if you are not on one, then this might potentially make a noticeable difference in system performance, stability, responsiveness and latency.<br>
+Some examples include CachyOS, Xanmod, Liquorix and Zen.<br>
 
-```bash
-#!/bin/bash
-export vblank_mode=0
-exec "$@"
-```
-Save with `Ctrl X, Ctrl Y, Enter`<br><br>
+<h1 align="left">3. Proton</h1>
+Similar to using a custom kernel, using a custom Proton build such as Proton-GE or CachyOS's Proton will provide you better performance all around and allow the usage of some environment variables such as PROTON_ENABLE_WAYLAND to avoid XWayland if you're on Wayland.<br>
 
-<h1 align="center">2. How to disable X11 in favour of Wayland (only for wayland)</h1>
-Assuming you run Wayland, there is an extra layer between Geometry Dash and your screen called XWayland, which is used as Proton runs games with X11 by default.<br>
-To change this, we will use steam launch options, I have found that Proton-GE and Proton-cachyos both have the PROTON_ENABLE_WAYLAND variable available, Proton Experimental does not.<br>
-<table>
-  <tr>
-    <td align="center">First, check that Geometry Dash is running through XWayland, I will do this through the KWin debug console</td>
-    <td align="center"><img width="679" height="129" alt="image" src="https://github.com/user-attachments/assets/38a1613a-f335-4a5e-a0e3-cad243f62cb5" /></td>
-  </tr>
-  <tr>
-    <td align="center">Open Geometry Dash, and check if Geometry Dash is in Wayland or X11 windows category.</td>
-    <td align="center"><img width="503" height="325" alt="image" src="https://github.com/user-attachments/assets/b0992f8b-3e22-4d6b-84b7-14463e3f2f15" /></td>
-  </tr>
-</table><br>
-If it is in X11 category, follow these steps to make Geometry Dash use Wayland:<br>
+<h1 align="left">4. Enabling Tearing on Wayland</h1>
+You can search for instructions on how to do this for your desktop environment if it is not mentioned here.<br>
+
+Run the following command in your terminal (You can replace "nano" with your preferred CLI text editor):<br>
 
 ```
-nano ~/game.sh
+sudo nano /etc/environment
 ```
-<br><br>
-Add wayland variable:<br>
-(or visit #4)<br>
-```bash
-#!/bin/bash
-export PROTON_ENABLE_WAYLAND=1
-exec "$@"
+After that, follow the steps based on your desktop environment:<br>
+
+<h2 align="left">KDE Plasma:</h2>
+Enable the "Allow tearing on full-screen applications" option in Display Configuration and put this in your /etc/environment file:<br>
+
 ```
-Save with: `Ctrl X, Ctrl Y, Enter`<br>
-
-Go to Geometry Dash on Steam, right click it in your library and click on Properties<br>
-Enter this into the LAUNCH OPTIONS box: `~/game.sh %command%`<br>
-Launch Geometry Dash and check KWin debug console, make sure that Geometry Dash is under Wayland Windows<br><br>
-
-<h1 align="center">3. Platform-specific tweaks</h1>
-
-<h2 align="center">AMD GPU</h2>
-Add this line in your game.sh:<br>
-(or visit #4)<br>
-
-```bash
-export ENABLE_LAYER_MESA_ANTI_LAG=1
+KWIN_DRM_NO_AMS=1
 ```
+Save with: `Ctrl+X, Ctrl+Y, Enter`<br>
 
-<h1 align="center">4. Global game.sh</h1>
-This game.sh is designed to cover all cases for lowest latency:<br>
+<h2 align="left">Hyprland:</h2>
+In your /etc/environment file, put:<br>
 
-```bash
-#!/bin/bash
-export PROTON_ENABLE_WAYLAND=1
-export vblank_mode=0
-export ENABLE_LAYER_MESA_ANTI_LAG=1
-export PROTON_NO_STEAMINPUT=1
-export LD_PRELOAD=""
-export WINEDLLOVERRIDES="xinput1_4=n,b"
-exec "$@"
 ```
+Direct_Scanout=1
+```
+Save with: `Ctrl+X, Ctrl+Y, Enter`<br>
 
+<br>
+<br>
+<h1 align="center">5. Environment Variables</h1>
+Use the following environment variables in your Geometry Dash launch options for the least latency:<br>
+To set environment variables in Steam, right click Geometry Dash in your library, click on properties and write the following inside:
+
+```
+SDL_VIDEODRIVER=wayland PROTON_ENABLE_WAYLAND=1 vblank_mode=0 WINEDLLOVERRIDES="xinput1_4=n,b" %command%
+```
 Explanation:
 <table>
+  <tr>
+    <td align="center">SDL_VIDEODRIVER=wayland</td>
+    <td align="center">Forces SDL2 apps to use Wayland back-end instead of defaulting to X11/XWayland. Without it, SDL2 usually uses X11 even under Wayland unless compiled otherwise</td>
+  </tr>
   <tr>
     <td align="center">PROTON_ENABLE_WAYLAND=1</td>
     <td align="center">Enables Wayland over X11 to avoid XWayland input lag overhead</td>
@@ -125,28 +83,15 @@ Explanation:
     <td align="center">Uses present mode, which instantly displays a frame instead of waiting for a vertical refresh (vblank)</td>
   </tr>
   <tr>
-    <td align="center">ENABLE_LAYER_MESA_ANTI_LAG=1</td>
-    <td align="center">Reduces input lag on AMD GPUs with AMD Anti-Lag</td>
-  </tr>
-  <tr>
-    <td align="center">PROTON_NO_STEAMINPUT=1</td>
-    <td align="center">Fixes controller compatibility issues</td>
-  </tr>
-  <tr>
-    <td align="center">LD_PRELOAD=""</td>
-    <td align="center">Removes steam overlay to fix stuttering caused by steam's game recorder feature</td>
-  </tr>
-  <tr>
     <td align="center">WINEDLLOVERRIDES="xinput1_4=n,b"</td>
     <td align="center">Required for <a href="https://geode-sdk.org">Geode</a> to function</td>
   </tr>
 </table>
 
-<h1 align="center">Common issues</h1>
-"The game doesn't open from steam anymore after adding launch options"<br>
-This is due to the game.sh not being executable, use this command to fix the issue:<br>
+<h1 align="left">6. Ananicy-Cpp</h1>
+TBD<br>
 
-`chmod +x ~/game.sh`
+<h1 align="left">7. Power Profile</h1>
+TBD<br>
 
-
-<h2 align="center">Feel free to make a pull request to improve the quality of this document and suggest other methods</h2>
+<h2 align="center">Feel free to make a pull request to improve the quality of this guide and to suggest other methods!</h2>
