@@ -31,12 +31,12 @@ Copy these settings.
 
 ## 1.1 Method 2 (ONLY AMD / INTEL)
 
-Set present mode to immediately deliver any frame instead of waiting.<br>
+Set present mode to immediately deliver any frame instead of waiting for a vertical refresh.<br>
 `nano ~/game.sh`<br><br>
 Add present mode variable:<br>
 (or visit #4)<br>
 `#!/bin/bash`<br>
-`export MESA_VK_WSI_PRESENT_MODE=immediate`<br>
+`export vblank_mode=0<br>
 `exec "$@"`<br>
 Save with `Ctrl X, Ctrl Y, Enter`<br><br>
 
@@ -71,10 +71,11 @@ Add this line in your game.sh:<br>
 This game.sh is designed to cover all cases for lowest latency:<br>
 `#!/bin/bash`<br>
 `export PROTON_ENABLE_WAYLAND=1`<br>
-`export MESA_VK_WSI_PRESENT_MODE=immediate`<br>
+`export vblank_mode=0`<br>
 `export ENABLE_LAYER_MESA_ANTI_LAG=1`<br>
 `export PROTON_NO_STEAMINPUT=1`<br>
 `export LD_PRELOAD=""`<br>
+`export WINEDLLOVERRIDES="xinput1_4=n,b"`
 `exec "$@"`<br>
 
 Explanation:
@@ -84,8 +85,8 @@ Explanation:
     <td align="center">Enables Wayland over X11 to avoid XWayland input lag overhead</td>
   </tr>
   <tr>
-    <td align="center">MESA_VK_WSI_PRESENT_MODE=immediate</td>
-    <td align="center">Uses present mode, which instantly displays a frame instead of waiting for the next frames for example with vsync.</td>
+    <td align="center">vblank_mode=0</td>
+    <td align="center">Uses present mode, which instantly displays a frame instead of waiting for a vertical refresh (vblank)</td>
   </tr>
   <tr>
     <td align="center">ENABLE_LAYER_MESA_ANTI_LAG=1</td>
@@ -98,6 +99,10 @@ Explanation:
   <tr>
     <td align="center">LD_PRELOAD=""</td>
     <td align="center">Removes steam overlay to fix stuttering caused by steam's game recorder feature</td>
+  </tr>
+  <tr>
+    <td align="center">WINEDLLOVERRIDES="xinput1_4=n,b"</td>
+    <td align="center">Required for <a href="https://geode-sdk.org">Geode</a> to function</td>
   </tr>
 </table>
 
