@@ -2,6 +2,7 @@
 Typically, the culprit for increased input latency on linux can be due to these things:
 1. Tearing disabled
 2. Geometry Dash running on X11
+3. Not using provided optional tweaks (e.g. AMD Anti-Lag)
 
 # Topics:
 
@@ -9,6 +10,7 @@ Typically, the culprit for increased input latency on linux can be due to these 
 - [2. How to disable X11 in favour of Wayland](#2-how-to-disable-x11-in-favour-of-wayland-only-for-wayland)
 - [3. Platform-specific tweaks](#3-platform-specific-tweaks)
 - [4. Global game.sh](#4-global-gamesh)
+- 
 # 1. How to enable tearing
 You can search for instructions on how to do this for your desktop environment, many desktop environments may not even support tearing.<br>
 I will demonstrate how to do this for KDE Plasma on CachyOS.
