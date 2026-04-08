@@ -72,7 +72,7 @@ Explanation:
 <table>
   <tr>
     <td align="center">SDL_VIDEO_DRIVER=wayland<br>SDL_VIDEODRIVER=wayland</td>
-    <td align="center">Forces SDL apps to use Wayland back-end instead of defaulting to X11/XWayland. Without it, SDL uses X11 even under Wayland unless compiled otherwise<br>Two variables are set because SDL2 uses SDL_VIDEODRIVER, but SDL3 uses SDL_VIDEO_DRIVER and to be honest, I don't know how to know if all proton versions use sdl2 or 3, or if it differs.</td>
+    <td align="center">Forces SDL (2 and 3) apps to use Wayland back-end instead of defaulting to X11/XWayland. Without it, SDL uses X11 even under Wayland unless compiled otherwise.</td>
   </tr>
   <tr>
     <td align="center">PROTON_ENABLE_WAYLAND=1</td>
