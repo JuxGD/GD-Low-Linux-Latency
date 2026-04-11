@@ -29,6 +29,10 @@ If you are on a gaming focused Linux distribution such as CachyOS, then you dont
 However, if you are not on one, then this might potentially make a noticeable difference in system performance, stability, responsiveness and latency.<br>
 Some gaming focused custom kernels include CachyOS, Xanmod, Liquorix and Zen.<br>
 
+<h2 align="center">NTSYNC</h2>
+The NTSYNC driver is another compatibility layer between Windows and Linux, meant to mimic the Windows NTSYNC driver.<br>
+It can be added as a kernel module, kernels like CachyOS' kernel will have NTSYNC by default, though you will have to check, there is a documented issue in the Environment Varibles section (5) that is noteworthy.<br>
+
 <h1 align="center">3. Proton</h1>
 Similar to using a custom kernel, using a custom Proton build such as Proton-GE or CachyOS's Proton will provide you better performance all around and allow the usage of some environment variables such as PROTON_ENABLE_WAYLAND to avoid XWayland if you're on Wayland.<br>
 
@@ -77,7 +81,7 @@ Explanation:
   </tr>
   <tr>
     <td align="center">PROTON_ENABLE_WAYLAND=1</td>
-    <td align="center">Enables Wayland over X11 to avoid XWayland input lag overhead</td>
+    <td align="center">Enables Wayland over X11 to avoid XWayland input lag overhead<br>Note that if your kernel does not have NTSYNC enabled, this will cause the game window to not appear when this variable is set, make sure to add NTSYNC to your kernel as it also reduces latency.</td>
   </tr>
   <tr>
     <td align="center">vblank_mode=0</td>
