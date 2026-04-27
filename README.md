@@ -87,7 +87,26 @@ Make sure to run your game in fullscreen otherwise it will not work.<br>
 
 <h2 align="left">Niri:</h2>
 Niri has no support for tearing, but <a href="https://github.com/urayde/niri">urayde's fork</a> has experimental support. Use at your own risk.<br>
-Unfortunately, you'll have to build it from source, as there are no binaries available. Check your distribution's documentation for more details.
+Unfortunately, you'll have to build it from source, as there are no binaries available. Check your distribution's documentation for more details.<br>
+After installation, enabling tearing can be done in one of two ways:<br>
+
+- Using window rules (tearing only when the GD window or any other specified windows are focused):
+
+```kdl
+window-rule {
+  match app-id="^gd$" is-focused=true
+
+  allow-tearing true
+}
+```
+
+- Forcing with debug options (tearing everywhere, however this is not meant for normal use):
+
+```kdl
+debug {
+  force-tearing
+}
+```
 
 <h1 align="center">5. Environment Variables</h1>
 Use the following environment variables in your Geometry Dash launch options for the least latency:<br>
