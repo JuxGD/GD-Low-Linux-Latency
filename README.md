@@ -46,7 +46,7 @@ You will need a text editor. The examples use Nano, which is common and easy to 
 sudo nano <file>
 ```
 
-Where "<file>" is the file you want to edit. "sudo" can generally be omitted if the file is in your home directory.<br>
+Where "\<file>" is the file you want to edit. "sudo" can generally be omitted if the file is in your home directory.<br>
 To exit, do `Ctrl+X`. This will exit Nano if no changes were made.<br>
 If changes were made, save them with `Y, Enter` or discard them with `N`.
 
