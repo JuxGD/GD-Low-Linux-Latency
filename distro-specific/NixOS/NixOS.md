@@ -93,7 +93,7 @@ Finally, run these commands:
 
 ```bash
 # this will update all packages needed by your config to their latest version in your channel (in our case, unstable)
-sudo nix flake update
+nix flake update
 
 # rebuild system
 sudo nixos-rebuild switch
