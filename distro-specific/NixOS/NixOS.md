@@ -335,7 +335,7 @@ Edit your `flake.nix`:
 
 Then, in your `configuration.nix`, make these changes:
 
-```
+```nix
 { config, lib, pkgs, inputs, ... }: # this is the very beginning of the file
 # notice we added `inputs` here, that's important
 
