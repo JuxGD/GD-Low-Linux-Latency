@@ -11,7 +11,8 @@ Typically, the culprit for increased input latency on Linux may be:
 3. Geometry Dash running through XWayland
 
 
-There are also [distro specific instructions](distro-specific)
+There are also [distro-specific instructions](distro-specific) for the following distros:
+- [NixOS](distro-specific/NixOS/NixOS.md)
 
 
 <h1 align="center">Sections</h1>
