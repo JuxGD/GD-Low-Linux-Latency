@@ -2,6 +2,7 @@
 
 let
     nix-cachyos-kernel = inputs.nix-cachyos-kernel;
+    proton-flake = inputs.proton-flake;
 in
 {
     # ...
@@ -62,7 +63,7 @@ in
             Direct_Scanout=1
         '';
         systemPackages = with pkgs; [
-            protonup-qt # for proton-cachyos
+            protonup-qt # for proton thing to do it imperatively
             xwayland-satellite # for some X11 programs this is useful, recommend leaving it in
         ];
     };
@@ -114,6 +115,16 @@ in
             enable = true;
             withUWSM = true;
             xwayland.enable = true;
+        };
+
+        # steam (guide assumes you have this already but this is for the proton thing)
+        steam = {
+            enable = true;
+            extraCompatTools = [
+                # this installs the proton versions declaratively
+                proton-flake.${pkgs.stdenv.hostPlatform.system}.cachyos-proton
+                proton-flake.${pkgs.stdenv.hostPlatform.system}.ge-proton
+            ];
         };
     };
 

@@ -22,10 +22,16 @@
         # cachyos kernel
         nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
+        # proton versions
+        proton-flake = {
+            url = "github:JuxGD/proton-flake";
+            inputs.nixpkgs.follows = "nixpks";
+        };
+
         # ...
     };
 
-    outputs = { self, nixpkgs, nix-cachyos-kernel, ... }@inputs: rec {
+    outputs = { self, nixpkgs, nix-cachyos-kernel, proton-flake, ... }@inputs: rec {
         nixosConfigurations = {
             # leave yourcomputer as it was
             yourcomputer = nixpkgs.lib.nixosSystem {
