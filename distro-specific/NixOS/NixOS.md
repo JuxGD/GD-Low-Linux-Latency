@@ -1,6 +1,6 @@
 # NixOS
 
-This document contains instructions and example implementations for NixOS. Some of the material here mayapply to Linux systems managed with [System Manager](https://github.com/numtide/system-manager), though that's not a guarantee.
+This document contains instructions and example implementations for NixOS. Some of the material here may apply to Linux systems managed with [System Manager](https://github.com/numtide/system-manager), though that's not a guarantee.
 
 You're expected to know how NixOS and the Nix language work, at least the basics.
 
@@ -182,7 +182,7 @@ If you want to use Wayland, add this to your configuration:
         xwayland-satellite # for some X11 programs this is useful, recommend leaving it in
     ];
 
-    services.displayManager.sddm = {
+    services.displayManager.sddm = { # or whatever display manager you use
         enable = true;
         wayland.enable = true;
     };
@@ -193,9 +193,67 @@ If you want to use Wayland, add this to your configuration:
 }
 ```
 
+A Wayland session option will be added for DEs, WMs, or compositors that support it.
+
 ## Proton
 
 As mentioned earlier, Proton is the thing that Steam uses to run Windows games. But the Proton included in Steam is missing a few things that we need. We gotta use another version of Proton.
+
+### Declaratively (the Nix way)
+
+The Steam program options in NixOS have ways to add custom compatibility tools. We can use these to install custom Proton versions declaratively.
+
+Custom Proton versions are not available in Nixpkgs, except for Proton GE, but there's community flakes that provide them as packages. Using CachyOS Proton is recommended.
+
+I, JuxGD, have valiantly taken on the burden of [making a flake for this purpose](https://github.com/JuxGD/proton-flake). (Credits to imaviso for the [original project](https://github.com/imaviso/dwproton-flake), which my thing is an expansion of)
+
+Add this to your `flake.nix`:
+
+```nix
+{
+    # ...
+
+    inputs = {
+
+        # ...
+
+        proton-flake = {
+            url = "github:JuxGD/proton-flake"; # made by yours truly
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
+        # ...
+    };
+    outputs = { self, nixpkgs, proton-flake, ... }: { # add `proton-flake` to what you had before
+        # ...
+    };
+}
+```
+
+Then add this to your `configuration.nix`:
+
+```nix
+{ config, lib, nixpkgs, inputs, ... }: # add `inputs` to what you had before
+
+let
+    proton-flake = inputs.proton-flake;
+in
+{
+    # ...
+
+    programs.steam.extraCompatPackages = with pkgs; [
+        proton-ge-bin # Proton GE is included in nixpkgs
+        proton-flake.packages.${pkgs.stdenv.hostPlatform.system}.ge-proton # this is Proton GE from the flake we added earlier, and may be updated more regularly
+        proton-flake.packages.${pkgs.stdenv.hostPlatform.system}.cachyos-proton # CachyOS Proton is also provided by this flake
+    ];
+
+    # ...
+}
+```
+
+When it's done, open Steam, go to GD in your library, open up its properties, and go to the "Compatibility" section, check "Force the use of a specific Steam Play compatibility tool", and select the one you installed.
+
+### Imperatively
 
 We're gonna use ProtonUp-Qt, an app that makes installing custom Proton versions easier.
 
@@ -431,7 +489,7 @@ Finally, edit `home.nix`:
 
     programs.niri = {
         config = (builtins.readFile ./niri.kdl);
-    }
+    };
 
     # ...
 }
