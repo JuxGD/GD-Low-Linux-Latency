@@ -251,6 +251,12 @@ in
 }
 ```
 
+Then rebuild:
+
+```bash
+sudo nixos-rebuild switch
+```
+
 When it's done, open Steam, go to GD in your library, open up its properties, and go to the "Compatibility" section, check "Force the use of a specific Steam Play compatibility tool", and select the one you installed.
 
 ### Imperatively
